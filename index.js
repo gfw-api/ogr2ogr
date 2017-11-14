@@ -1,7 +1,6 @@
 var path = require('path')
 var cp = require('child_process')
 var zip = require('./modules/zip')
-var csv = require('./modules/csv')
 var util = require('./modules/util')
 var stream = require('stream')
 var EE = require('events').EventEmitter
@@ -119,27 +118,13 @@ Ogr2ogr.prototype._getOrgInPath = function(cb) {
     ogr2ogr._inPath = fpath
 
     ogr2ogr._isZipIn = /zip|kmz/.test(path.extname(fpath)) && !/^\/vsizip\//.test(fpath)
-    ogr2ogr._isCsvIn = /csv/.test(path.extname(fpath))
     ogr2ogr._isZipOut = ogr2ogr._driver.output == 'zip'
-
     ogr2ogr._ogrOutPath = ogr2ogr._isZipOut ? util.genTmpPath() : '/vsistdout/'
 
     if (ogr2ogr._isZipIn) {
       zip.extract(fpath, function(er2, fpath2) {
         if (er2) return one(er2)
         zip.findOgrFile(fpath2, one)
-      })
-    }
-    else if (ogr2ogr._isCsvIn) {
-      csv.makeVrt(fpath, function(err, vrt) {
-        if (vrt && /\.vrt$/.test(vrt)) {
-          // always set a source srs
-          if (!ogr2ogr._sourceSrs) ogr2ogr._sourceSrs = ogr2ogr._targetSrs
-        } else {
-          // no geo data so no target srs
-          delete ogr2ogr._targetSrs
-        }
-        one(err, vrt)
       })
     }
     else {
@@ -229,9 +214,6 @@ Ogr2ogr.prototype._clean = function() {
 
   if (this._isZipIn && this._ogrInPath) {
     util.rmParentDir(this._ogrInPath, all())
-  }
-  if (this._isCsvIn && /vrt/.test(this._ogrInPath)) {
-    util.rmFile(this._ogrInPath, all())
   }
   if (this._isZipOut) {
     util.rmDir(this._ogrOutPath, all())
