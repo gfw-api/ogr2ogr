@@ -36,6 +36,7 @@ function Ogr2ogr(mixed, fmt) {
   this._args = []
   this._timeout = 15000
   this._format = 'GeoJSON'
+  this._sourceSrs = 'EPSG:4326'
   this._skipfailures = false
 
   this._testClean = function() {} // testing
