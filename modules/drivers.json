@@ -75,6 +75,6 @@
   {
     "format": "XLSX",
     "aliases": [ "xlsx" ],
-    "output": "xlsx"
+    "output": "vrt"
   }
 ]
