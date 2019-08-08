@@ -71,5 +71,10 @@
     "format": "VRT",
     "aliases": [ "vrt" ],
     "output": "vrt"
+  },
+  {
+    "format": "XLSX",
+    "aliases": [ "xlsx" ],
+    "output": "xlsx"
   }
 ]

@@ -17,7 +17,7 @@
   "GFT": { },
   "CouchDB": { },
   "ODS": { },
-  "XLSX": { },
+  //"XLSX": { },
   "ElasticSearch": { },
   "PDF": { }
 }
